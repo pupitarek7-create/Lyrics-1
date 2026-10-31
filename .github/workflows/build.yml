@@ -1,0 +1,47 @@
+name: Build Sky Lyrics
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+
+      - name: Build mod
+        run: gradle build --no-daemon
+
+      - name: Collect the mod jar (without the sources jar)
+        run: |
+          mkdir -p dist
+          cp $(ls build/libs/*.jar | grep -v -- '-sources') dist/
+          ls -l dist
+
+      - name: Upload mod jar as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: skylyrics-1.21.1
+          path: dist/*.jar
+
+      - name: Publish jar to GitHub Releases
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Sky Lyrics build ${{ github.run_number }}
+          files: dist/*.jar
