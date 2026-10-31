@@ -11,6 +11,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: SkyLyricsMod-GitHub-Project/SkyLyricsMod
     steps:
       - uses: actions/checkout@v4
 
@@ -36,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: skylyrics-1.21.1
-          path: dist/*.jar
+          path: SkyLyricsMod-GitHub-Project/SkyLyricsMod/dist/*.jar
 
       - name: Publish jar to GitHub Releases
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -44,4 +47,5 @@ jobs:
         with:
           tag_name: build-${{ github.run_number }}
           name: Sky Lyrics build ${{ github.run_number }}
-          files: dist/*.jar
+          files: SkyLyricsMod-GitHub-Project/SkyLyricsMod/dist/*.jar
+          
