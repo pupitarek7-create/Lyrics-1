@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "skylyrics",
+  "version": "${version}",
+  "name": "Sky Lyrics",
+  "description": "A cinematic floating-lyrics effect for the Minecraft sky.",
+  "authors": ["Merkury"],
+  "environment": "client",
+  "entrypoints": { "client": ["com.merkury.skylyrics.SkyLyricsClient"] },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
